@@ -1,4 +1,5 @@
 import streamlit as st
+import requests
 
 '''
 # TaxiFareModel front
@@ -46,3 +47,30 @@ if url == 'https://taxifare.lewagon.ai/predict':
 
 ## Finally, we can display the prediction to the user
 '''
+with st.form("Data"):
+    pickup_longitude = st.text_input('Pickup Longitude', '40.7614327')
+
+    pickup_latitude = st.text_input('Pickup Latitude', '73.9798156')
+
+    dropoff_longitude = st.text_input('Dropoff Longitude', '40.6513111')
+
+    dropoff_latitude = st.text_input('Dropoff Latitude', '73.8803331')
+
+    passenger_count = st.text_input('Number of Passengers', '2')
+
+    submitted = st.form_submit_button("Submit")
+
+    if submitted:
+        params = dict(
+                                                pickup_datetime= '2012-10-06 17:18:00',
+                                                pickup_longitude = pickup_longitude,
+                                                pickup_latitude = pickup_latitude,
+                                                dropoff_longitude = dropoff_longitude,
+                                                dropoff_latitude = dropoff_latitude,
+                                                passenger_count = passenger_count,
+                                                format = 'json'
+                                                )
+        st.write(params)
+        response = requests.get(url, params=params).json()
+
+        st.write('Result is ', response['fare'])
